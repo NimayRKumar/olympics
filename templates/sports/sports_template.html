@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sports</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title></title>
+</head>
+<li><a href="sports"> Sports</a></li>
+<body>
+{{nav|safe}}
+<div class="bg-image">
+<picture>
+<img src="{{obj['banner']}}" alt="{{obj['name']}}" class="lazyload"></picture>
+</div>
+<h1 style="margin-left: 20px">{{obj['name']}}</h1>
+<img style="margin-left: 20px" src="{{obj['img']}}"/>
+<table align = "center">
+{% set eventarray = obj['events'] %}
+{% for event in eventarray %}
+    <tr>
+    <td>
+    <a class = "btn btn-default" href = "/sports/event/{{event}}">{{event}}</a>
+    </td>
+    </tr>
+{% endfor %}
+
+</table>
+</body>
+</html>

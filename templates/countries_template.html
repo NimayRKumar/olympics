@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Countries</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title></title>
+
+	<style>
+		th{
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body style="padding-top: 87px; width: 95%; margin: 0 auto; text-align: center;">
+
+<div style="margin: auto; text-align: center;">
+	<img src = "{{obj['img']}}" width=35 height=20 style="margin: auto;">
+	<h1> {{obj['country']|safe}} </h1>
+</div>
+<br>
+
+<table class="table" style = "width: 70%; margin:auto">
+	<thead>
+		<tr>
+			<th>Games</th>
+			<th>Flag Bearer</th>
+			<th>Total Participants</th>
+			<th>Male Participants</th>
+			<th>Female Participants</th>
+			<th># of Sports Participated</th>
+			<th># of Gold Medals</th>
+			<th># of Silver Medals</th>
+			<th># of Bronze Medals</th>
+			<th>Total Medals</th>
+			<th>Top Medalists</th>
+		</tr>
+	</thead>
+	{% for r in obj['table'] %}
+	<tbody>
+		<tr>
+			<td> {{r['games'] | safe}} </td>
+			<td> {{r['flag bearer'] | safe}} </td>
+			<td> {{r['participants'] | safe}} </td>
+			<td> {{r['participants-men'] | safe}} </td>
+			<td> {{r['participants-women'] | safe}} </td>
+			<td> {{r['sports'] | safe}} </td>
+			<td> {{r['Gold'] | safe}} </td>
+			<td> {{r['Silver'] | safe}} </td>
+			<td> {{r['Bronze'] | safe}} </td>
+			<td> {{r['Total'] | safe}} </td>
+			<td> {{r['top medalists'] | safe}} </td>
+		</tr>
+	</tbody>
+	{% endfor %}
+</table>
+<br><br>
+
+<!-- Medal Bar Chart -->
+<canvas id = "myChart" height = "200" width = "400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+	var ctx = document.getElementById('myChart').getContext('2d');
+	var xlabels = []
+	{% for y in obj['years'] %}
+		xlabels.push('{{y}}');
+	{% endfor %}
+	var gold = []
+	var silver = []
+	var bronze = []
+	{% for r in obj['table'] %}
+		{% set g = (r['Gold'] | int) %}
+		{% set s = (r['Silver'] | int) %}
+		{% set b = (r['Bronze'] | int )%}
+		gold.push({{g}});
+		silver.push({{s}});
+		bronze.push({{b}});
+	{% endfor %}
+	var myChart = new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: xlabels,
+			datasets: [
+				{ label: '# of Gold', data: gold, backgroundColor: 'rgba(255, 206, 86, 0.2)', borderColor: 'rgba(255, 206, 86, 1)', borderWidth: 1},
+				{ label: '# of Silver', data: silver, backgroundColor: 'rgba(192, 192, 192, 0.2)', borderColor: 'rgba(192, 192, 192, 1)', borderWidth: 1},
+				{ label: '# of Bronze', data: bronze, backgroundColor: 'rgba(205, 127, 50, .2)', borderColor: 'rgba(205, 127, 50, 1)', borderWidth: 1}
+			]
+		},
+		options: { title: {display: true, text: 'Medal Progression'}, legend: {position: 'bottom'}, scales: { yAxes: [{ gridLines:{display:false}, scaleLabel: {display: true, labelString: 'Total Medals'}, 
+		stacked: true, ticks: {beginAtZero: true, precision: 0} }], xAxes: [ {scaleLabel: {display: true, labelString: 'Year/Season'}, stacked: true, ticks: {beginAtZero: true}}] } }
+	});
+</script>
+<br><br>
+
+{{nav|safe}}
+
+</body>
+
+<body>
+
+
+</body>
+
+</html>
